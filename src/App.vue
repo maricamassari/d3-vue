@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>D3 visualization within Vue</h1>
+    <h1>D3 visualization with Vue</h1>
     <svg width="800" height="600" id="viz"></svg>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   },
   mounted(){
     // ------- variables -------
-    let numbers = [100, 250, 160, 88, 200];
+    let numbers = [100, 250, 160, 88, 220];
     const svg = d3.select('#viz');
 
     const rects = svg.selectAll('rect')
