@@ -18,13 +18,6 @@ export default {
     let numbers = [100, 250, 160, 88, 220];
     const svg = d3.select('#viz');
 
-    const rects = svg.selectAll('rect')
-      .data(numbers)
-      .join('rect');
-
-    const labels = svg.selectAll('text')
-        .data(numbers)
-        .join('text');
 
     // ------- scales functions -------
     const scaleLength = d3.scaleLinear()
@@ -32,29 +25,34 @@ export default {
         .range([0, 600]);
 
     const scalePos = d3.scaleBand()
-        .domain([0,1,2,3,4])
-        .range([0, 150])
-        .round('x', true)
-        .paddingInner(0.06)
-        .paddingOuter(0.06); //in termini percentuali
+        .domain(d3.range(numbers.length))
+        .range([0, 300])
+        .round(true)
+        .paddingInner(0.05)
+        .paddingOuter(0.05); //in termini percentuali
 
-    // ------- update -------
-    rects
-      .attr('x', 20)
-      .attr("fill", '#989FCE')
+
+    // create g group
+    const gs = svg.selectAll('g.bars')
+      .data(numbers)
+      .join('g').attr('class','bars');
+
+    gs.attr('transform', (d, i) => `translate(0, ${scalePos(i)})`)
+
+    gs.append('rect')
+      .attr('fill', '#4ea8de')
       .attr('height', scalePos.bandwidth())
-      .attr('y', (d,i) => scalePos(i))
       .attr('width', scaleLength);
-
-
-    // ------- create text labels -------
-
-    labels
+    gs.append('text')
       .text( (d) => d)
       .attr('x', scaleLength)
-      .attr('y', (d,i) => scalePos(i))
-      .attr('dy', scalePos.bandwidth()/2+5)
-      .attr('dx', -20);
+      .attr('y',  scalePos.bandwidth()/2);
+
+
+
+
+
+
   }
 }
 </script>
