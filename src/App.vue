@@ -23,29 +23,37 @@ export default {
     const scaleLength = d3.scaleLinear()
         .domain([0, d3.max(numbers)])
         .range([0, 600]);
-
     const scalePos = d3.scaleBand()
         .domain(d3.range(numbers.length))
         .range([0, 300])
         .round(true)
         .paddingInner(0.05)
         .paddingOuter(0.05); //in termini percentuali
-
+    const lAxis = d3.axisTop(scaleLength)
 
     // create g group
+    svg.append('g')
+      .attr('class', 'lAxis')
+      .attr('transform', 'translate(20, 20)')
+      .call(lAxis);
+
     const gs = svg.selectAll('g.bars')
       .data(numbers)
       .join('g').attr('class','bars');
 
-    gs.attr('transform', (d, i) => `translate(0, ${scalePos(i)})`)
+    // join gs
+    gs.attr('transform', (d, i) => `translate(20, ${20 +scalePos(i)})`)
 
     gs.append('rect')
-      .attr('fill', '#4ea8de')
+      .attr('fill', '#023e7d')
       .attr('height', scalePos.bandwidth())
       .attr('width', scaleLength);
     gs.append('text')
       .text( (d) => d)
+      .style('fill', '#ffffff')
+      .style("font-size", "19px")
       .attr('x', scaleLength)
+      .attr("dx", "-2.4em")
       .attr('y',  scalePos.bandwidth()/2);
 
 
