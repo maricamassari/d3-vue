@@ -1,7 +1,22 @@
 <template>
   <div id="app">
-    <h1>D3 visualization with Vue</h1>
-    <svg width="800" height="600" id="viz"></svg>
+    <b-container>
+      <b-row>
+        <b-col>
+          <h1>D3 visualization with Vue</h1>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col><p>Click the button to shuffle the numbers</p></b-col>
+        <b-col><b-button @click="shuffleNumbers">Shuffle</b-button></b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <svg width="800" height="600" id="viz"></svg>
+        </b-col>
+      </b-row>
+    </b-container>
+
   </div>
 </template>
 
@@ -61,10 +76,10 @@ export default {
 
       const gs = svg.selectAll('g.bars')
           .data(listOfNumbers)
-          .join('g').attr('class','bars');
+          .join('g').attr('class', 'bars');
 
       // join gs
-      gs.attr('transform', (d, i) => `translate(20, ${20 +scalePos(i)})`)
+      gs.attr('transform', (d, i) => `translate(20, ${20 + scalePos(i)})`)
 
       gs.selectAll('rect')
           .data(d => [d]) //the number I have as an array
@@ -76,14 +91,21 @@ export default {
       gs.selectAll('text')
           .data(d => [d])
           .join('text')
-          .text( (d) => d)
+          .text((d) => d)
           .style('fill', '#ffffff')
           .style("font-size", "19px")
           .attr('x', scaleLength)
           .attr("dx", "-2.4em")
-          .attr('y',  scalePos.bandwidth()/2);
+          .attr('y', scalePos.bandwidth() / 2);
+    },
+
+    shuffleNumbers(){
+      const N = Math.round(Math.random()*10);
+      this.numbers = d3.range(N).map(d => Math.round(d+Math.random()*400));
+      //d3.range --> create an array with N elements
     }
-  }
+  },
+
 }
 </script>
 
