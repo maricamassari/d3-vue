@@ -13,63 +13,76 @@ export default {
   components: {
 
   },
+  // ========= data =========
+  data(){ //it is a function that takes nothing and returns an object
+    return {
+      numbers: [88, 100, 150, 160, 289, 320, 540],
+    }
 
-  mounted(){
-    let numbers = [100, 250, 160, 88, 220, 500];
+  },
+  mounted: function(){
+    this.refreshChart(this.numbers)
+  },
+  // ======= watch =======
+  watch:{
+    //numbers(newVal) {
+      //every time we change the values of numbers we execute what
+      // is in this function
 
-    const svg = d3.select('#viz');
-
-
-    // ------- scales functions -------
-    const scaleLength = d3.scaleLinear()
-        .domain([0, d3.max(numbers)])
-        .range([0, 600]);
-
-    const lAxis = d3.axisTop(scaleLength);
-
-    const scalePos = d3.scaleBand()
-        .domain(d3.range(numbers.length))
-        .range([0, 300])
-        .round(true)
-        .paddingInner(0.05)
-        .paddingOuter(0.05); //in termini percentuali
-
-    svg.append('g')
-      .attr('class', 'lAxis')
-      .attr('transform', 'translate(20, 20)')
-      .call(lAxis);
-
-    // create g group
-    svg.append('g')
-      .attr('class', 'lAxis')
-      .attr('transform', 'translate(20, 20)')
-      .call(lAxis);
-
-    const gs = svg.selectAll('g.bars')
-      .data(numbers)
-      .join('g').attr('class','bars');
-
-    // join gs
-    gs.attr('transform', (d, i) => `translate(20, ${20 +scalePos(i)})`)
-
-    gs.append('rect')
-      .attr('fill', '#023e7d')
-      .attr('height', scalePos.bandwidth())
-      .attr('width', scaleLength);
-
-    gs.append('text')
-      .text( (d) => d)
-      .style('fill', '#ffffff')
-      .style("font-size", "19px")
-      .attr('x', scaleLength)
-      .attr("dx", "-2.4em")
-      .attr('y',  scalePos.bandwidth()/2);
+    //}
 
 
+  },
+  methods: {
+    refreshChart(listOfNumbers) {
+      const svg = d3.select('#viz');
 
 
+      // ------- scales functions -------
+      const scaleLength = d3.scaleLinear()
+          .domain([0, d3.max(listOfNumbers)])
+          .range([0, 600]);
 
+      const lAxis = d3.axisTop(scaleLength);
 
+      const scalePos = d3.scaleBand()
+          .domain(d3.range(listOfNumbers.length))
+          .range([0, 300])
+          .round(true)
+          .paddingInner(0.05)
+          .paddingOuter(0.05); //in termini percentuali
+
+      svg.selectAll('g.lAxis')
+          .data([0])
+          .join('g')
+          .attr('class', 'lAxis')
+          .attr('transform', 'translate(20, 20)')
+          .call(lAxis);
+
+      const gs = svg.selectAll('g.bars')
+          .data(listOfNumbers)
+          .join('g').attr('class','bars');
+
+      // join gs
+      gs.attr('transform', (d, i) => `translate(20, ${20 +scalePos(i)})`)
+
+      gs.selectAll('rect')
+          .data(d => [d]) //the number I have as an array
+          .join('rect')
+          .attr('fill', '#063064')
+          .attr('height', scalePos.bandwidth())
+          .attr('width', scaleLength);
+
+      gs.selectAll('text')
+          .data(d => [d])
+          .join('text')
+          .text( (d) => d)
+          .style('fill', '#ffffff')
+          .style("font-size", "19px")
+          .attr('x', scaleLength)
+          .attr("dx", "-2.4em")
+          .attr('y',  scalePos.bandwidth()/2);
+    }
   }
 }
 </script>
