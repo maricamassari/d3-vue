@@ -35,16 +35,17 @@ export default {
     }
 
   },
+
+  // ========= mounted =========
   mounted: function(){
-    this.refreshChart(this.numbers)
+    this.refreshChart(this.numbers);
   },
+
   // ======= watch =======
   watch:{
-    //numbers(newVal) {
-      //every time we change the values of numbers we execute what
-      // is in this function
-
-    //}
+    numbers(newVal) {
+      this.refreshChart(newVal);
+    }
 
 
   },
@@ -79,7 +80,7 @@ export default {
           .join('g').attr('class', 'bars');
 
       // join gs
-      gs.attr('transform', (d, i) => `translate(20, ${20 + scalePos(i)})`)
+      gs.attr('transform', (d, i) => `translate(20, ${20 + scalePos(i)})`);
 
       gs.selectAll('rect')
           .data(d => [d]) //the number I have as an array
@@ -100,7 +101,7 @@ export default {
     },
 
     shuffleNumbers(){
-      const N = Math.round(Math.random()*10);
+      const N = Math.round(Math.random()+6);
       this.numbers = d3.range(N).map(d => Math.round(d+Math.random()*400));
       //d3.range --> create an array with N elements
     }
